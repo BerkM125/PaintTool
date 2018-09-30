@@ -1,16 +1,16 @@
-/****************************************************************
-  Bachelor of Software Engineering
-  Media Design School
-  Auckland
-  New Zealand
+/*******************************************************************
+Bachelor of Software Engineering
+Media Design School
+Auckland
+New Zealand
 
-  (c) 2018 Media Design School
+(c) 2018 Media Design School
 
-  File Name   :   [Filename]
-  Description :   [One line description of what is the file is for]
-  Author      :   [Your name]
-  Mail        :   [your.name]@mediadesign.school.nz
-********************************************************************/
+File Name   :   polygon.h
+Description :   this holds important infomation for the polygon
+Author      :   Henry Oliver
+Mail        :   henry.oliver@mediadesign.school.nz
+***********************************************************************/
 
 #ifndef __POLYGON_H__
 #define __POLYGON_H__

@@ -7,7 +7,7 @@
   (c) 2018 Media Design School
 
   File Name   :   canvas.h
-  Description :   [One line description of what is the file is for]
+  Description :   this holds important infomation for the backbuffer
   Author      :   Henry Oliver
   Mail        :   henry.oliver@mediadesign.school.nz
 ***********************************************************************/
