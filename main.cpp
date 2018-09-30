@@ -28,6 +28,8 @@
 #include "backBuffer.h"
 
 #define WINDOW_CLASS_NAME L"WINCLASS1"
+typedef DWORD COLORREF;
+typedef DWORD* LPCOLORREF;
 
 //Global variables
 HINSTANCE g_hInstance;
@@ -46,6 +48,25 @@ enum ESHAPE
 	STAMP
 };
 
+COLORREF DoChooseColor(HWND const _hWnd, const COLORREF _CurrentColor)
+{
+	CHOOSECOLOR cc;
+	ZeroMemory(&cc, sizeof(cc));
+	static COLORREF UserCustomColors[16]{};
+
+	cc.lStructSize = sizeof(cc);
+	cc.hwndOwner = _hWnd;
+	cc.lpCustColors = static_cast<LPDWORD>(UserCustomColors);
+	cc.rgbResult = _CurrentColor;
+	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+
+	if (ChooseColor(&cc))
+	{
+		return cc.rgbResult;
+	}
+	// else
+	return _CurrentColor;
+}
 
 void GameLoop()
 {
@@ -77,6 +98,8 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 		hdc = BeginPaint(_hwnd, &ps);
 		// You would do all your painting here...
 		
+
+
 		EndPaint(_hwnd, &ps);
 		// Return Success.
 		return (0);
@@ -87,7 +110,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 		switch (LOWORD(_wparam))
 		{
 		case ID_FILE_OPEN:
-		{
+		{+
 			MessageBox(_hwnd, L"[INSERT FILE OPEN FEATURE HERE]", L"PLACEHOLDER", MB_OK | MB_ICONWARNING);
 			break;
 		}
@@ -95,16 +118,16 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 		{
 			MessageBox(_hwnd, L"[INSERT FILE SAVE FEATURE HERE]", L"PLACEHOLDER", MB_OK | MB_ICONWARNING);
 			break;
-		}
+		} 
 		case ID_FILE_EXIT:
 		{
-			int msgboxID = MessageBox(_hwnd, L"Are you sure you want to exit?", L"Goodbye", MB_OKCANCEL | MB_ICONINFORMATION);
+			int msgboxID = MessageBox(_hwnd, L"Are you sure you want to exit?", L"Goodbye", MB_YESNO | MB_ICONEXCLAMATION);
 			switch (msgboxID)
 			{
-			case IDOK:
+			case IDYES:
 				PostQuitMessage(0);
 				break;
-			case IDCANCEL:
+			case IDNO:
 				//do nothing
 				break;
 			}
@@ -138,6 +161,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 
 		case ID_PEN_COLOR:{
 			MessageBox(_hwnd, L"This is pen, COLORS!", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			DoChooseColor(_hwnd, (0,0,0));
 			break;
 		}
 

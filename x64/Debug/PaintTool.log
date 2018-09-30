@@ -1,2 +1,3 @@
 ﻿  main.cpp
+e:\uni\source\paint tool\paint program summative\painttool\painttool\main.cpp(113): warning C4552: '+': operator has no effect; expected operator with side-effect
   PaintTool.vcxproj -> E:\UNI\Source\Paint Tool\Paint Program Summative\PaintTool\x64\Debug\PaintTool.exe
