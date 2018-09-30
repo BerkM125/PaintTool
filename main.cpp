@@ -110,9 +110,24 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 			}
 			break;
 		}
-		case ID_HELP_ABOUT:
-		{
-			MessageBox(_hwnd, L"This paint tool was developed by Henry Oliver", L"Author Information", MB_OK | MB_ICONINFORMATION);
+
+		case ID_SHAPE_LINE: {
+			MessageBox(_hwnd, L"This is line, AND HE IS THIN", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			break;
+		}
+
+		case ID_SHAPE_R: {
+			MessageBox(_hwnd, L"This is box, AND HE THICK", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			break;
+		}
+
+		case ID_SHAPE_ELLIPSE: {
+			MessageBox(_hwnd, L"This is ellipse, AND HE IS CURVED", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			break;
+		}
+
+		case ID_SHAPE_POLYGON: {
+			MessageBox(_hwnd, L"This is polygon, AND HE IS polly?", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
 			break;
 		}
 
@@ -131,6 +146,26 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 			break;
 		}
 
+		case ID_BRUSH_COLOR: {
+			MessageBox(_hwnd, L"This is brush, COLOR!", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			break;
+		}
+
+		case ID_BRUSH_STYLE: {
+			MessageBox(_hwnd, L"This is brush, AND HE IS STYLISH", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			break;
+		}
+
+		case ID_ADD_STAMP: {
+			MessageBox(_hwnd, L"This is stamp, AND HE IS A COLLECTOR", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			break;
+		}
+
+		case ID_HELP_ABOUT:
+		{
+			MessageBox(_hwnd, L"This paint tool was developed by Henry Oliver", L"Author Information", MB_OK | MB_ICONINFORMATION);
+			break;
+		}
 		default:
 			break;
 		}
