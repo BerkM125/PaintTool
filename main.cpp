@@ -98,8 +98,16 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 		}
 		case ID_FILE_EXIT:
 		{
-			MessageBox(_hwnd, L"Thank you for using my Paint Tool", L"Goodbye", MB_OK | MB_ICONINFORMATION);
-			PostQuitMessage(0);
+			int msgboxID = MessageBox(_hwnd, L"Are you sure you want to exit?", L"Goodbye", MB_OKCANCEL | MB_ICONINFORMATION);
+			switch (msgboxID)
+			{
+			case IDOK:
+				PostQuitMessage(0);
+				break;
+			case IDCANCEL:
+				//do nothing
+				break;
+			}
 			break;
 		}
 		case ID_HELP_ABOUT:
@@ -108,11 +116,18 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 			break;
 		}
 
-		case ID_PEN: {
+		case ID_PEN_WIDTH: {
+			MessageBox(_hwnd, L"This is pen, HE IS NOT FAT!", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
 			break;
 		}
 
 		case ID_PEN_COLOR:{
+			MessageBox(_hwnd, L"This is pen, COLORS!", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			break;
+		}
+
+		case ID_PEN_STYLE: {
+			MessageBox(_hwnd, L"This is pen, AND HE IS STYLISH", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
 			break;
 		}
 
