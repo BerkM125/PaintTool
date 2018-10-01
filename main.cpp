@@ -48,21 +48,21 @@ enum ESHAPE
 	STAMP
 };
 
-COLORREF DoChooseColor(HWND const _hWnd, const COLORREF _CurrentColor)
+COLORREF _ChooseColor(HWND const _hWnd, const COLORREF _CurrentColor)
 {
-	CHOOSECOLOR cc;
-	ZeroMemory(&cc, sizeof(cc));
+	CHOOSECOLOR m_Color;
+	ZeroMemory(&m_Color, sizeof(m_Color));
 	static COLORREF UserCustomColors[16]{};
 
-	cc.lStructSize = sizeof(cc);
-	cc.hwndOwner = _hWnd;
-	cc.lpCustColors = static_cast<LPDWORD>(UserCustomColors);
-	cc.rgbResult = _CurrentColor;
-	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+	m_Color.lStructSize = sizeof(m_Color);
+	m_Color.hwndOwner = _hWnd;
+	m_Color.lpCustColors = static_cast<LPDWORD>(UserCustomColors);
+	m_Color.rgbResult = _CurrentColor;
+	m_Color.Flags = CC_FULLOPEN | CC_RGBINIT;
 
-	if (ChooseColor(&cc))
+	if (ChooseColor(&m_Color))
 	{
-		return cc.rgbResult;
+		return m_Color.rgbResult;
 	}
 	// else
 	return _CurrentColor;
@@ -144,6 +144,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 			break;
 		}
 
+
 		case ID_SHAPE_ELLIPSE: {
 			MessageBox(_hwnd, L"This is ellipse, AND HE IS CURVED", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
 			break;
@@ -161,7 +162,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 
 		case ID_PEN_COLOR:{
 			MessageBox(_hwnd, L"This is pen, COLORS!", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
-			DoChooseColor(_hwnd, (0,0,0));
+			_ChooseColor(_hwnd, (255,255,255));
 			break;
 		}
 
