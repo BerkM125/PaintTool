@@ -1,4 +1,8 @@
 #include "canvas.h"
+#include "shape.h"
+#include <vector>
+
+std::vector<IShape>shapeIterator;
 
 CCanvas::CCanvas()
 {
@@ -6,6 +10,9 @@ CCanvas::CCanvas()
 
 CCanvas::~CCanvas()
 {
+	for (int i = 0; i < m_shapes.size(); i++) {
+		delete(m_shapes[i]);
+	}
 }
 
 bool CCanvas::Initialise(HWND _hwnd, int _iWidth, int _iHeight)
@@ -20,10 +27,13 @@ CBackBuffer * CCanvas::GetBackBuffer()
 
 bool CCanvas::Draw(HDC _hdc)
 {
-	MoveToEx(_hdc, 0, 0, NULL);
-	LineTo(_hdc, 100, 500);
 
-	return false;
+	for (int i = 0; i < m_shapes.size(); i++) {
+
+		m_shapes[i]->Draw(_hdc);
+	}
+
+	return true;
 }
 
 void CCanvas::Save(HWND _hwnd)
@@ -31,9 +41,10 @@ void CCanvas::Save(HWND _hwnd)
 	
 }
 
-void CCanvas::AddShape(IShape *)
+void CCanvas::AddShape(IShape * shape)
 {
 
+	m_shapes.push_back(shape);
 
 
 }

@@ -93,7 +93,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 	case WM_CREATE:
 	{
 		// Do initialization stuff here.
-		
+
 		g_pCanvas = new CCanvas;
 		// Return Success.
 		return (0);
@@ -101,15 +101,22 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 	break;
 
 	case WM_LBUTTONDOWN: {
-		if (!amDrawing) {
-			_StartPos = _MousePos;
-			amDrawing = true;
-		}
-		else {
-			_EndPos = _MousePos;
-			amDrawing = false;
-		}
-		
+		_StartPos = _MousePos;
+		CLine* ptr = new CLine(PS_SOLID, 3, RGB(0, 0, 0), _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
+		g_pShape = ptr;
+		amDrawing = true;
+		InvalidateRect(_hwnd, nullptr, true);
+
+		break;
+	}
+
+	case WM_LBUTTONUP: {
+		_EndPos = _MousePos;
+		g_pShape->SetEndX(_EndPos.x);
+		g_pShape->SetEndY(_EndPos.y);
+		g_pCanvas->AddShape(g_pShape);
+		g_pShape = nullptr;
+		InvalidateRect(_hwnd, nullptr, true);
 		break;
 	}
 
@@ -124,20 +131,11 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 	{
 		hdc = BeginPaint(_hwnd, &ps);
 
-		if (amDrawing == false) {
-
-			CLine* ptr = new CLine(PS_SOLID, 3, RGB(0, 0, 0), _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
-
-			ptr->Draw(hdc);
-			g_pCanvas->Draw(hdc);
-			delete ptr;
-		}
-		else {
-			InvalidateRect(_hwnd, nullptr, true);
-		}
+		g_pCanvas->Draw(hdc);
 
 		EndPaint(_hwnd, &ps);
 		// Return Success.
+
 		return (0);
 	}
 	break;
@@ -325,5 +323,6 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 	}
 
 	// Return to Windows like this...
+	
 	return (static_cast<int>(msg.wParam));
 }

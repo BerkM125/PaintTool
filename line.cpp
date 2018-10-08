@@ -41,8 +41,7 @@ void CLine::Draw(HDC _hdc) {
 }
 
 void CLine::SetWidth(int _iNewWidth) {
-
-
+	m_iWidth = _iNewWidth;
 }
 
 CLine::CLine(int _iStyle, int _iWidth, COLORREF _newColor, int _iStartX, int _iStartY, int _iEndX, int _iEndY)
