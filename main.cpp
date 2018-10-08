@@ -37,6 +37,7 @@ CCanvas* g_pCanvas;
 IShape* g_pShape = 0;
 HMENU g_hMenu;
 
+
 //Enum to decalre the type of tool supported by the application.
 enum ESHAPE
 {
@@ -96,8 +97,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 	case WM_PAINT:
 	{
 		hdc = BeginPaint(_hwnd, &ps);
-		// You would do all your painting here...
-		
+		CLine::CLinec(0, 1, RGB(0, 0, 0), 0, 0);
 
 
 		EndPaint(_hwnd, &ps);
@@ -110,7 +110,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 		switch (LOWORD(_wparam))
 		{
 		case ID_FILE_OPEN:
-		{+
+		{
 			MessageBox(_hwnd, L"[INSERT FILE OPEN FEATURE HERE]", L"PLACEHOLDER", MB_OK | MB_ICONWARNING);
 			break;
 		}
@@ -135,7 +135,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 		}
 
 		case ID_SHAPE_LINE: {
-			MessageBox(_hwnd, L"This is line, AND HE IS THIN", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			//MessageBox(_hwnd, L"This is line, AND HE IS THIN", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
 			break;
 		}
 
@@ -161,8 +161,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 		}
 
 		case ID_PEN_COLOR:{
-			MessageBox(_hwnd, L"This is pen, COLORS!", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
-			_ChooseColor(_hwnd, (255,255,255));
+			_ChooseColor(_hwnd, RGB(255,255,255));
 			break;
 		}
 
