@@ -1,3 +1,4 @@
+
 /*******************************************************************
   Bachelor of Software Engineering
   Media Design School
@@ -43,7 +44,6 @@ public:
 	bool Draw(HDC _hdc);
 	void Save(HWND _hwnd);
 	void AddShape(IShape*);
-	
 	
 private:
 	CBackBuffer* m_pBackBuffer; // A canvas has a backbuffer.

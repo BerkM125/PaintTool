@@ -32,8 +32,8 @@ void CLine::Draw(HDC _hdc) {
 	//HPEN green_pen = CreatePen(PS_SOLID, 7, RGB(0, 255, 0));
 	//HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
 
-	MoveToEx(_hdc, 10, 10, NULL);
-	LineTo(_hdc, 50, 60);
+	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);
+	LineTo(_hdc, m_iEndX, m_iEndY);
 
 	//SelectObject(_hdc, old_pen);
 	//DeleteObject(green_pen);
@@ -45,11 +45,13 @@ void CLine::SetWidth(int _iNewWidth) {
 
 }
 
-void CLine::CLinec(int _iStyle, int _iWidth, COLORREF _newColor, int _iStartX, int _iStartY) {
-
-	_iStyle = PS_SOLID;
-	_iWidth = 1;
-	_newColor = RGB(0, 0, 0);
-	_iStartX = 0;
-	_iStartY = 0;
+CLine::CLine(int _iStyle, int _iWidth, COLORREF _newColor, int _iStartX, int _iStartY, int _iEndX, int _iEndY)
+{
+	m_Color = _newColor;
+	m_iStyle = _iStyle;
+	m_iWidth = _iWidth;
+	m_iStartX = _iStartX;
+	m_iStartY = _iStartY;
+	m_iEndX = _iEndX;
+	m_iEndY = _iEndY;
 }

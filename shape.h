@@ -32,14 +32,14 @@ public:
 	void SetEndX(int _iEndX);
 	void SetStartY(int _iStartX);
 	void SetEndY(int _iStartX);
-	//void SetColor(COLORREF _newColor);
+	void SetColor(COLORREF _newColor);
 
 protected:
 	int m_iStartX;
 	int m_iEndX;
 	int m_iStartY;
 	int m_iEndY;
-	//COLORREF m_ColorRef;
+	COLORREF m_ColorRef;
 };
 
 #endif

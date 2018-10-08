@@ -37,6 +37,7 @@ CCanvas* g_pCanvas;
 IShape* g_pShape = 0;
 HMENU g_hMenu;
 
+bool amDrawing;
 
 //Enum to decalre the type of tool supported by the application.
 enum ESHAPE
@@ -74,31 +75,66 @@ void GameLoop()
 	//One frame of game logic occurs here...
 }
 
-LRESULT CALLBACK WindowProc(HWND _hwnd,
-	UINT _msg,
-	WPARAM _wparam,
-	LPARAM _lparam)
+LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lparam)
 {
 	// This is the main message handler of the system.
 	PAINTSTRUCT ps; // Used in WM_PAINT.
 	HDC hdc;        // Handle to a device context.
+	static POINT _MousePos;
+	static POINT _StartPos;
+	static POINT _EndPos;
+
+	static ESHAPE currentShape;
+	static ESHAPE Eline;
 	
+
 	switch (_msg)
 	{
 	case WM_CREATE:
 	{
 		// Do initialization stuff here.
 		
-
+		g_pCanvas = new CCanvas;
 		// Return Success.
 		return (0);
 	}
 	break;
+
+	case WM_LBUTTONDOWN: {
+		if (!amDrawing) {
+			_StartPos = _MousePos;
+			amDrawing = true;
+		}
+		else {
+			_EndPos = _MousePos;
+			amDrawing = false;
+		}
+		
+		break;
+	}
+
+	case WM_MOUSEMOVE:
+	{
+		_MousePos = { GET_X_LPARAM(_lparam),  GET_Y_LPARAM(_lparam) };
+		break;
+
+		return 0;
+	}
 	case WM_PAINT:
 	{
 		hdc = BeginPaint(_hwnd, &ps);
-		CLine::CLinec(0, 1, RGB(0, 0, 0), 0, 0);
 
+		if (amDrawing == false) {
+
+			CLine* ptr = new CLine(PS_SOLID, 3, RGB(0, 0, 0), _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
+
+			ptr->Draw(hdc);
+			g_pCanvas->Draw(hdc);
+			delete ptr;
+		}
+		else {
+			InvalidateRect(_hwnd, nullptr, true);
+		}
 
 		EndPaint(_hwnd, &ps);
 		// Return Success.
@@ -136,6 +172,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 
 		case ID_SHAPE_LINE: {
 			//MessageBox(_hwnd, L"This is line, AND HE IS THIN", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			currentShape = Eline;
 			break;
 		}
 
