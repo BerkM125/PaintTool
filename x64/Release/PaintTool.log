@@ -1,0 +1,9 @@
+﻿  canvas.cpp
+  line.cpp
+  main.cpp
+  rectangle.cpp
+  shape.cpp
+  Generating code
+  All 108 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  PaintTool.vcxproj -> E:\UNI\Source\Paint Tool\Paint Program Summative\PaintTool\x64\Release\PaintTool.exe

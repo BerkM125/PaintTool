@@ -150,11 +150,17 @@
     <ClInclude Include="stamp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="canvas.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="rectangle.cpp" />
+    <ClCompile Include="shape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PaintTool.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

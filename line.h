@@ -24,8 +24,6 @@ Mail        :   henry.oliver@mediadesign.school.nz
 class CLine : public IShape
 {
 public:
-	//CLine(int _iStartX, int _iStartY, int _iEndX, int _iEndY, COLORREF _newColour, int _iStyle, int _iWidth); 
-	//CLine(int _iStyle, int _iWidth, COLORREF _newColor, int _iStartX, int _iStartY);
 	CLine();
 	virtual ~CLine();
 	virtual void Draw(HDC _hdc);

@@ -37,6 +37,8 @@ CCanvas* g_pCanvas;
 IShape* g_pShape = 0;
 HMENU g_hMenu;
 
+COLORREF currentColor;
+
 bool amDrawing;
 
 //Enum to decalre the type of tool supported by the application.
@@ -85,7 +87,6 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 	static POINT _EndPos;
 
 	static ESHAPE currentShape;
-	static ESHAPE Eline;
 	
 
 	switch (_msg)
@@ -102,9 +103,27 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 
 	case WM_LBUTTONDOWN: {
 		_StartPos = _MousePos;
-		CLine* ptr = new CLine(PS_SOLID, 3, RGB(0, 0, 0), _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
-		g_pShape = ptr;
-		amDrawing = true;
+		switch (currentShape)
+		{
+		case LINESHAPE:{
+			CLine* ptr = new CLine(PS_SOLID, 3, currentColor, _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
+			g_pShape = ptr;
+			amDrawing = true;
+			break;
+		}
+		case RECTANGLESHAPE: {
+			CRectangle* ptr = new CRectangle(SOLID, 3, currentColor, 0, currentColor, _StartPos.x, _StartPos.y);
+			g_pShape = ptr;
+			g_pShape->SetStartX(_StartPos.x);
+			g_pShape->SetStartY(_StartPos.y);
+			amDrawing = true;
+			break;
+		}
+		default:
+			break;
+		}
+		
+
 		InvalidateRect(_hwnd, nullptr, true);
 
 		break;
@@ -112,10 +131,26 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 
 	case WM_LBUTTONUP: {
 		_EndPos = _MousePos;
-		g_pShape->SetEndX(_EndPos.x);
-		g_pShape->SetEndY(_EndPos.y);
-		g_pCanvas->AddShape(g_pShape);
-		g_pShape = nullptr;
+		switch (currentShape)
+		{
+		case LINESHAPE: {
+			g_pShape->SetEndX(_EndPos.x);
+			g_pShape->SetEndY(_EndPos.y);
+			g_pCanvas->AddShape(g_pShape);
+			g_pShape = nullptr;
+			break;
+		}
+		case RECTANGLESHAPE: {
+			g_pShape->SetEndX(_EndPos.x);
+			g_pShape->SetEndY(_EndPos.y);
+			g_pCanvas->AddShape(g_pShape);
+			g_pShape = nullptr;
+			break;
+		}
+		default:
+			break;
+		}
+
 		InvalidateRect(_hwnd, nullptr, true);
 		break;
 	}
@@ -169,24 +204,23 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ID_SHAPE_LINE: {
-			//MessageBox(_hwnd, L"This is line, AND HE IS THIN", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
-			currentShape = Eline;
+			currentShape = LINESHAPE;
 			break;
 		}
 
 		case ID_SHAPE_R: {
-			MessageBox(_hwnd, L"This is box, AND HE THICK", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			currentShape = RECTANGLESHAPE;
 			break;
 		}
 
 
 		case ID_SHAPE_ELLIPSE: {
-			MessageBox(_hwnd, L"This is ellipse, AND HE IS CURVED", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			currentShape = ELLIPSESHAPE;
 			break;
 		}
 
 		case ID_SHAPE_POLYGON: {
-			MessageBox(_hwnd, L"This is polygon, AND HE IS polly?", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			currentShape = POLYGONSHAPE;
 			break;
 		}
 
@@ -196,7 +230,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ID_PEN_COLOR:{
-			_ChooseColor(_hwnd, RGB(255,255,255));
+			currentColor = _ChooseColor(_hwnd, currentColor);
 			break;
 		}
 

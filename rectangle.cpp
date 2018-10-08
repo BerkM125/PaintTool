@@ -1,0 +1,54 @@
+#include <Windows.h>
+
+#include "rectangle.h"
+
+CRectangle::CRectangle()
+{
+}
+
+CRectangle::~CRectangle()
+{
+}
+
+void CRectangle::Draw(HDC _hdc)
+{
+	HPEN green_pen = CreatePen(m_iBrushStyle, 10, m_Color);
+	HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
+
+	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);
+	
+	Rectangle(_hdc, m_iStartX, m_iStartY, m_iEndX, m_iEndY);
+
+	SelectObject(_hdc, old_pen);
+	DeleteObject(green_pen);
+}
+
+void CRectangle::SetBrushStyle(EBRUSHSTYLE _brushStyle)
+{
+}
+
+void CRectangle::SetFillColor(COLORREF _newColor)
+{
+}
+
+void CRectangle::SetPenStyle(int _iPenStyle)
+{
+}
+
+void CRectangle::SetPenColor(COLORREF _newColor)
+{
+}
+
+void CRectangle::SetHatchStyle(int _iHatchStyle)
+{
+}
+
+CRectangle::CRectangle(EBRUSHSTYLE _iBrushStyle, int _iHatchStyle, COLORREF _FillColor, int _iPenStyle, COLORREF _PenColor, int _X, int _Y)
+{
+	m_iBrushStyle = _iBrushStyle;
+	m_iHatchStyle = _iHatchStyle;
+	m_iFillColor = _FillColor;
+	m_iPenStyle = _iPenStyle;
+	m_iPenColor = _PenColor;
+	m_Color = _PenColor;
+}

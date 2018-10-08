@@ -29,14 +29,14 @@ CLine:: ~CLine() {
 void CLine::Draw(HDC _hdc) {
 
 
-	//HPEN green_pen = CreatePen(PS_SOLID, 7, RGB(0, 255, 0));
-	//HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
+	HPEN green_pen = CreatePen(m_iStyle, m_iWidth, m_Color);
+	HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
 
 	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);
 	LineTo(_hdc, m_iEndX, m_iEndY);
 
-	//SelectObject(_hdc, old_pen);
-	//DeleteObject(green_pen);
+	SelectObject(_hdc, old_pen);
+	DeleteObject(green_pen);
 
 }
 

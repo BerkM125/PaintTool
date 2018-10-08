@@ -1,5 +1,1 @@
-﻿  line.cpp
-  main.cpp
-g:\uni\source\paint tool\paint program summative\painttool\painttool\main.cpp(99): error C2440: '<function-style-cast>': cannot convert from 'initializer list' to 'CLine'
-  g:\uni\source\paint tool\paint program summative\painttool\painttool\main.cpp(99): note: No constructor could take the source type, or constructor overload resolution was ambiguous
-  Generating Code...
+﻿  PaintTool.vcxproj -> E:\UNI\Source\Paint Tool\Paint Program Summative\PaintTool\x64\Debug\PaintTool.exe
