@@ -16,6 +16,7 @@
 
 #include <windows.h>   // Include all the windows headers.
 #include <windowsx.h>  // Include useful macros.
+#include <sstream>
 
 #include "resource.h"
 #include "shape.h"
@@ -38,8 +39,13 @@ IShape* g_pShape = 0;
 HMENU g_hMenu;
 
 COLORREF currentColor;
+COLORREF brushcurrentColor;
 
 bool amDrawing;
+int PenWeight = 2;
+int PenStyle = 0;
+int BrushWeight = 2;
+int BrushStyle = 0;
 
 //Enum to decalre the type of tool supported by the application.
 enum ESHAPE
@@ -106,17 +112,33 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		switch (currentShape)
 		{
 		case LINESHAPE:{
-			CLine* ptr = new CLine(PS_SOLID, 3, currentColor, _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
+			CLine* ptr = new CLine(PS_SOLID, PenWeight, currentColor, _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
 			g_pShape = ptr;
 			amDrawing = true;
 			break;
 		}
 		case RECTANGLESHAPE: {
-			CRectangle* ptr = new CRectangle(SOLID, 3, currentColor, 0, currentColor, _StartPos.x, _StartPos.y);
+			CRectangle* ptr = new CRectangle(SOLID, 3, brushcurrentColor, 0, currentColor, _StartPos.x, _StartPos.y);
 			g_pShape = ptr;
 			g_pShape->SetStartX(_StartPos.x);
 			g_pShape->SetStartY(_StartPos.y);
 			amDrawing = true;
+			break;
+		}
+
+		case ELLIPSESHAPE: {
+			CEllipse* ptr = new CEllipse(currentColor, _StartPos.x, _StartPos.y);
+			g_pShape = ptr;
+			g_pShape->SetStartX(_StartPos.x);
+			g_pShape->SetStartY(_StartPos.y);
+			amDrawing = true;
+			break;
+		}
+		case POLYGONSHAPE: {
+			break;
+		}
+		
+		case STAMP:{
 			break;
 		}
 		default:
@@ -143,8 +165,23 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case RECTANGLESHAPE: {
 			g_pShape->SetEndX(_EndPos.x);
 			g_pShape->SetEndY(_EndPos.y);
+			g_pShape->SetColor(currentColor);
 			g_pCanvas->AddShape(g_pShape);
 			g_pShape = nullptr;
+			break;
+		}
+		case ELLIPSESHAPE: {
+			g_pShape->SetEndX(_EndPos.x);
+			g_pShape->SetEndY(_EndPos.y);
+			g_pCanvas->AddShape(g_pShape);
+			g_pShape = nullptr;
+			break;
+		}
+		case POLYGONSHAPE: {
+			break;
+		}
+
+		case STAMP: {
 			break;
 		}
 		default:
@@ -205,27 +242,67 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 
 		case ID_SHAPE_LINE: {
 			currentShape = LINESHAPE;
+			CheckMenuItem(g_hMenu, ID_SHAPE_POLYGON, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_ELLIPSE, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_R, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_LINE, MF_CHECKED);
 			break;
 		}
 
 		case ID_SHAPE_R: {
 			currentShape = RECTANGLESHAPE;
+			CheckMenuItem(g_hMenu, ID_SHAPE_POLYGON, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_ELLIPSE, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_R, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_LINE, MF_UNCHECKED);
 			break;
 		}
 
 
 		case ID_SHAPE_ELLIPSE: {
 			currentShape = ELLIPSESHAPE;
+			CheckMenuItem(g_hMenu, ID_SHAPE_POLYGON, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_ELLIPSE, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_R, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_LINE, MF_UNCHECKED);
 			break;
 		}
 
 		case ID_SHAPE_POLYGON: {
 			currentShape = POLYGONSHAPE;
+			CheckMenuItem(g_hMenu, ID_SHAPE_POLYGON, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_ELLIPSE, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_R, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_SHAPE_LINE, MF_UNCHECKED);
 			break;
 		}
 
 		case ID_PEN_WIDTH: {
-			MessageBox(_hwnd, L"This is pen, HE IS NOT FAT!", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			int maxweight = 10;
+			if (PenWeight == 0) {
+				PenWeight += 2;
+			}
+			PenWeight += 2;
+			if (PenWeight == 10) {
+				MessageBox(_hwnd, L"Weight: 10", L"Weight Information", MB_OK | MB_OK);
+			}
+			if (PenWeight == 8) {
+				MessageBox(_hwnd, L"Weight: 8", L"Weight Information", MB_OK | MB_OK);
+			}
+			if (PenWeight == 6) {
+				MessageBox(_hwnd, L"Weight: 6", L"Weight Information", MB_OK | MB_OK);
+			}
+			if (PenWeight == 4) {
+				MessageBox(_hwnd, L"Weight: 4", L"Weight Information", MB_OK | MB_OK);
+			}
+			if (PenWeight == 2) {
+				MessageBox(_hwnd, L"Weight: 2", L"Weight Information", MB_OK | MB_OK);
+			}
+			if (PenWeight > maxweight) {
+				PenWeight = 2;
+				MessageBox(_hwnd, L"Weight: 2", L"Weight Information", MB_OK | MB_OK);
+			} 
+
 			break;
 		}
 
@@ -240,7 +317,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ID_BRUSH_COLOR: {
-			MessageBox(_hwnd, L"This is brush, COLOR!", L"Author Information", MB_OK | MB_ICONEXCLAMATION);
+			brushcurrentColor = _ChooseColor(_hwnd, brushcurrentColor);
 			break;
 		}
 
@@ -318,7 +395,7 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 	// create the window
 	hwnd = CreateWindowEx(NULL, // Extended style.
 		WINDOW_CLASS_NAME,      // Class.
-		L"My Paint Tool",   // Title.
+		L"Henry's Paint Tool",   // Title.
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
 		100, 100,                    // Initial x,y.
 		1500, 800,                // Initial width, height.

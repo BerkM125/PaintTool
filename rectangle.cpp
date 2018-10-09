@@ -25,22 +25,27 @@ void CRectangle::Draw(HDC _hdc)
 
 void CRectangle::SetBrushStyle(EBRUSHSTYLE _brushStyle)
 {
+	m_iBrushStyle = _brushStyle;
 }
 
 void CRectangle::SetFillColor(COLORREF _newColor)
 {
+	m_iFillColor = _newColor;
 }
 
 void CRectangle::SetPenStyle(int _iPenStyle)
 {
+	m_iPenStyle = _iPenStyle;
 }
 
 void CRectangle::SetPenColor(COLORREF _newColor)
 {
+	m_iPenColor = _newColor;
 }
 
 void CRectangle::SetHatchStyle(int _iHatchStyle)
 {
+	m_iHatchStyle = _iHatchStyle;
 }
 
 CRectangle::CRectangle(EBRUSHSTYLE _iBrushStyle, int _iHatchStyle, COLORREF _FillColor, int _iPenStyle, COLORREF _PenColor, int _X, int _Y)
