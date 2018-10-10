@@ -37,11 +37,13 @@ public:
 private:
 	COLORREF m_iFillColor;
 	COLORREF m_iPenColor;
+
 	POINT* m_pPointList;
 	int m_nPoints;
 	int m_iFillStyle;
 	int m_iPenStyle;
 	int m_iPenWidth;
+	int m_iBrushStyle;
 };
 
 #endif

@@ -19,6 +19,7 @@ void IShape::SetEndX(int _iEndX)
 	m_iEndX = _iEndX;
 }
 
+
 void IShape::SetStartY(int _iStartY)
 {
 	m_iStartY = _iStartY;

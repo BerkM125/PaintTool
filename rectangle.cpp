@@ -15,8 +15,7 @@ void CRectangle::Draw(HDC _hdc)
 	HPEN green_pen = CreatePen(m_iPenStyle, m_Width, m_Color);
 	HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
 
-
-	HBRUSH brush = CreateSolidBrush(m_iFillColor);
+	HBRUSH brush = CreateHatchBrush(m_iBrushStyle, m_iFillColor);
 	HBRUSH o_brush = static_cast<HBRUSH>(SelectObject(_hdc, brush));
 
 	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);

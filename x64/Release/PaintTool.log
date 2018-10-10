@@ -1,8 +1,8 @@
-﻿  ellipse.cpp
-  rectangle.cpp
+﻿  polygon.cpp
+polygon.cpp(34): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   Generating code
-  3 of 115 functions ( 2.6%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  33 of 145 functions (22.8%) were compiled, the rest were copied from previous compilation.
+    30 functions were new in current compilation
+    7 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   PaintTool.vcxproj -> E:\UNI\Source\Paint Tool\Paint Program Summative\PaintTool\x64\Release\PaintTool.exe

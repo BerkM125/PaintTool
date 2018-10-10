@@ -1,8 +1,12 @@
 #include "polygon.h"
+#include <vector>
+
+std::vector<POINT> m_Points;
 
 CPolygon::CPolygon(int _iHatchStyle, COLORREF _FillColor, int _iPenStyle, COLORREF _PenColor, int _iPenWidth)
 {
 	_iHatchStyle = 0;
+	m_nPoints = 0;
 	m_iFillColor = _FillColor;
 	m_iPenStyle = _iPenStyle;
 	m_iPenColor = _PenColor;
@@ -23,12 +27,17 @@ void CPolygon::Draw(HDC _hdc)
 	HPEN green_pen = CreatePen(m_iPenStyle, m_iPenWidth, m_iPenColor);
 	HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
 
-	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);
+	HBRUSH brush = CreateSolidBrush(m_iFillColor);
+	HBRUSH o_brush = static_cast<HBRUSH>(SelectObject(_hdc, brush));
 
-	//Polygon(_hdc, , m);
+	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);
+	Polygon(_hdc, m_Points.data(), m_Points.size());
 
 	SelectObject(_hdc, old_pen);
+	SelectObject(_hdc, o_brush);
+
 	DeleteObject(green_pen);
+	DeleteObject(brush);
 
 }
 
@@ -42,6 +51,6 @@ void CPolygon::SetPenColor(COLORREF _newColor)
 	m_iPenColor = _newColor;
 }
 
-void CPolygon::AddPoint(POINT p)
-{
+void CPolygon::AddPoint(POINT p) {
+	m_Points.push_back(p);
 }
