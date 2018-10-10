@@ -127,7 +127,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ELLIPSESHAPE: {
-			CEllipse* ptr = new CEllipse(currentColor, _StartPos.x, _StartPos.y);
+			CEllipse* ptr = new CEllipse(currentColor,brushcurrentColor, _StartPos.x, _StartPos.y);
 			g_pShape = ptr;
 			g_pShape->SetStartX(_StartPos.x);
 			g_pShape->SetStartY(_StartPos.y);
@@ -162,10 +162,11 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 			g_pShape = nullptr;
 			break;
 		}
+
 		case RECTANGLESHAPE: {
 			g_pShape->SetEndX(_EndPos.x);
 			g_pShape->SetEndY(_EndPos.y);
-			g_pShape->SetColor(currentColor);
+			//g_pShape->SetColor(currentColor);
 			g_pCanvas->AddShape(g_pShape);
 			g_pShape = nullptr;
 			break;
@@ -215,6 +216,488 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 	{
 		switch (LOWORD(_wparam))
 		{
+
+		case ID_WIDTH_1: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_CHECKED);
+			PenWeight = 1;
+			break;
+		}
+		case ID_WIDTH_2: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_CHECKED);
+			PenWeight = 2;
+			break;
+		}
+		case ID_WIDTH_3: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_CHECKED);
+			PenWeight = 3;
+			break;
+		}
+		case ID_WIDTH_4: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_CHECKED);
+			PenWeight = 4;
+			break;
+		}
+		case ID_WIDTH_5: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_CHECKED);
+			PenWeight = 5;
+			break;
+		}
+		case ID_WIDTH_6: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_CHECKED);
+			PenWeight = 6;
+			break;
+		}
+		case ID_WIDTH_7: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_CHECKED);
+			PenWeight = 7;
+			break;
+		}
+		case ID_WIDTH_8: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_CHECKED);
+			PenWeight = 8;
+			break;
+		}
+		case ID_WIDTH_9: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_CHECKED);
+			PenWeight = 9;
+			break;
+		}
+		case ID_WIDTH_10: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_CHECKED);
+			PenWeight = 10;
+			break;
+		}
+		case ID_WIDTH_11: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_CHECKED);
+			PenWeight = 11;
+			break;
+		}
+		case ID_WIDTH_12: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_CHECKED);
+			PenWeight = 12;
+			break;
+		}
+		case ID_WIDTH_13: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_CHECKED);
+			PenWeight = 13;
+			break;
+		}
+		case ID_WIDTH_14: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_CHECKED);
+			PenWeight = 14;
+			break;
+		}
+		case ID_WIDTH_15: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_CHECKED);
+			PenWeight = 15;
+			break;
+		}
+		case ID_WIDTH_16: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_CHECKED);
+			PenWeight = 16;
+			break;
+		}
+		case ID_WIDTH_17: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_CHECKED);
+			PenWeight = 17;
+			break;
+		}
+		case ID_WIDTH_18: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_CHECKED);
+			PenWeight = 18;
+			break;
+		}
+		case ID_WIDTH_19: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_CHECKED);
+			PenWeight = 19;
+			break;
+		}
+		case ID_WIDTH_20: {
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_CHECKED);
+			PenWeight = 20;
+			break;
+		}
+
 		case ID_FILE_OPEN:
 		{
 			MessageBox(_hwnd, L"[INSERT FILE OPEN FEATURE HERE]", L"PLACEHOLDER", MB_OK | MB_ICONWARNING);
@@ -278,30 +761,26 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ID_PEN_WIDTH: {
-			int maxweight = 10;
-			if (PenWeight == 0) {
-				PenWeight += 2;
-			}
-			PenWeight += 2;
-			if (PenWeight == 10) {
-				MessageBox(_hwnd, L"Weight: 10", L"Weight Information", MB_OK | MB_OK);
-			}
-			if (PenWeight == 8) {
-				MessageBox(_hwnd, L"Weight: 8", L"Weight Information", MB_OK | MB_OK);
-			}
-			if (PenWeight == 6) {
-				MessageBox(_hwnd, L"Weight: 6", L"Weight Information", MB_OK | MB_OK);
-			}
-			if (PenWeight == 4) {
-				MessageBox(_hwnd, L"Weight: 4", L"Weight Information", MB_OK | MB_OK);
-			}
-			if (PenWeight == 2) {
-				MessageBox(_hwnd, L"Weight: 2", L"Weight Information", MB_OK | MB_OK);
-			}
-			if (PenWeight > maxweight) {
-				PenWeight = 2;
-				MessageBox(_hwnd, L"Weight: 2", L"Weight Information", MB_OK | MB_OK);
-			} 
+			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_UNCHECKED);
 
 			break;
 		}

@@ -15,11 +15,15 @@ void CRectangle::Draw(HDC _hdc)
 	HPEN green_pen = CreatePen(m_iBrushStyle, 10, m_Color);
 	HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
 
+	HBRUSH brush = CreateSolidBrush(m_iFillColor);
+
 	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);
 	
 	Rectangle(_hdc, m_iStartX, m_iStartY, m_iEndX, m_iEndY);
 
 	SelectObject(_hdc, old_pen);
+	SelectObject(_hdc, brush);
+	//DeleteObject(brush);
 	DeleteObject(green_pen);
 }
 

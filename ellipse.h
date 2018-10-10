@@ -25,7 +25,7 @@ Mail        :   henry.oliver@mediadesign.school.nz
 class CEllipse : public IShape
 {
 public:
-	CEllipse(COLORREF _newColor, int, int);
+	CEllipse(COLORREF _newColor, COLORREF _fillcolor, int, int);
 	CEllipse();
 	virtual ~CEllipse();
 
@@ -35,6 +35,7 @@ public:
 
 private:
 	COLORREF m_Color;
+	COLORREF m_iFillColor;
 };
 
 #endif
