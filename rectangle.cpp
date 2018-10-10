@@ -12,10 +12,12 @@ CRectangle::~CRectangle()
 
 void CRectangle::Draw(HDC _hdc)
 {
-	HPEN green_pen = CreatePen(m_iBrushStyle, 10, m_Color);
+	HPEN green_pen = CreatePen(m_iPenStyle, m_Width, m_Color);
 	HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
 
+
 	HBRUSH brush = CreateSolidBrush(m_iFillColor);
+	HBRUSH o_brush = static_cast<HBRUSH>(SelectObject(_hdc, brush));
 
 	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);
 	
@@ -23,7 +25,7 @@ void CRectangle::Draw(HDC _hdc)
 
 	SelectObject(_hdc, old_pen);
 	SelectObject(_hdc, brush);
-	//DeleteObject(brush);
+	DeleteObject(brush);
 	DeleteObject(green_pen);
 }
 
@@ -52,7 +54,7 @@ void CRectangle::SetHatchStyle(int _iHatchStyle)
 	m_iHatchStyle = _iHatchStyle;
 }
 
-CRectangle::CRectangle(EBRUSHSTYLE _iBrushStyle, int _iHatchStyle, COLORREF _FillColor, int _iPenStyle, COLORREF _PenColor, int _X, int _Y)
+CRectangle::CRectangle(int _iBrushStyle, int _iHatchStyle, COLORREF _FillColor, int _iPenStyle, COLORREF _PenColor, int _X, int _Y, int _iWidth)
 {
 	m_iBrushStyle = _iBrushStyle;
 	m_iHatchStyle = _iHatchStyle;
@@ -60,4 +62,5 @@ CRectangle::CRectangle(EBRUSHSTYLE _iBrushStyle, int _iHatchStyle, COLORREF _Fil
 	m_iPenStyle = _iPenStyle;
 	m_iPenColor = _PenColor;
 	m_Color = _PenColor;
+	m_Width = _iWidth;
 }

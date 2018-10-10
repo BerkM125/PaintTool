@@ -1,13 +1,13 @@
 #include "ellipse.h"
 
-CEllipse::CEllipse(COLORREF _newColor, COLORREF _fillcolor, int iX, int iY)
+CEllipse::CEllipse(COLORREF _newColor, COLORREF _fillcolor, int iX, int iY, int _iPenWidth, int _iPenStyle)
 {
 	m_Color = _newColor;
 	m_iFillColor = _fillcolor;
 	m_iStartX = iX;
 	m_iStartY = iY;
-	m_iEndX = 300;
-	m_iEndY = 30;
+	m_iPenWidth = _iPenWidth;
+	m_iPenStyle = _iPenStyle;
 }
 
 CEllipse::CEllipse()
@@ -20,10 +20,11 @@ CEllipse::~CEllipse()
 
 void CEllipse::Draw(HDC _hdc)
 {
-	HPEN green_pen = CreatePen(0, 10, m_Color);
+	HPEN green_pen = CreatePen(m_iPenStyle, m_iPenWidth, m_Color);
 	HPEN old_pen = static_cast<HPEN>(SelectObject(_hdc, green_pen));
 
 	HBRUSH brush = CreateSolidBrush(m_iFillColor);
+	HBRUSH o_brush = static_cast<HBRUSH>(SelectObject(_hdc, brush));
 
 	MoveToEx(_hdc, m_iStartX, m_iStartY, NULL);
 
@@ -31,7 +32,7 @@ void CEllipse::Draw(HDC _hdc)
 
 	SelectObject(_hdc, old_pen);
 	SelectObject(_hdc, brush);
-	//DeleteObject(brush);
+	DeleteObject(o_brush);
 	DeleteObject(green_pen);
 }
 

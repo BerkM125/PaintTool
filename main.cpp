@@ -42,9 +42,8 @@ COLORREF currentColor;
 COLORREF brushcurrentColor;
 
 bool amDrawing;
-int PenWeight = 2;
+int PenWeight = 1;
 int PenStyle = 0;
-int BrushWeight = 2;
 int BrushStyle = 0;
 
 //Enum to decalre the type of tool supported by the application.
@@ -112,13 +111,13 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		switch (currentShape)
 		{
 		case LINESHAPE:{
-			CLine* ptr = new CLine(PS_SOLID, PenWeight, currentColor, _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
+			CLine* ptr = new CLine(PenStyle, PenWeight, currentColor, _StartPos.x, _StartPos.y, _EndPos.x, _EndPos.y);
 			g_pShape = ptr;
 			amDrawing = true;
 			break;
 		}
 		case RECTANGLESHAPE: {
-			CRectangle* ptr = new CRectangle(SOLID, 3, brushcurrentColor, 0, currentColor, _StartPos.x, _StartPos.y);
+			CRectangle* ptr = new CRectangle(BrushStyle, 3, brushcurrentColor, PenStyle, currentColor, _StartPos.x, _StartPos.y, PenWeight);
 			g_pShape = ptr;
 			g_pShape->SetStartX(_StartPos.x);
 			g_pShape->SetStartY(_StartPos.y);
@@ -127,7 +126,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ELLIPSESHAPE: {
-			CEllipse* ptr = new CEllipse(currentColor,brushcurrentColor, _StartPos.x, _StartPos.y);
+			CEllipse* ptr = new CEllipse(currentColor,brushcurrentColor, _StartPos.x, _StartPos.y, PenWeight, PenStyle);
 			g_pShape = ptr;
 			g_pShape->SetStartX(_StartPos.x);
 			g_pShape->SetStartY(_StartPos.y);
@@ -695,6 +694,154 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_CHECKED);
 			PenWeight = 20;
+			break;
+		}
+
+		case ID_STYLE_SOLID:{
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLID, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHED, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_UNCHECKED);
+			PenStyle = 0;
+			break;
+		}
+		
+		case ID_STYLE_DASHED: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLID, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHED, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_UNCHECKED);
+			PenStyle = 1;
+			break;
+		}
+
+		case ID_STYLE_DOTTED: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLID, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHED, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_UNCHECKED);
+			PenStyle = 2;
+			break;
+		}
+
+
+		case ID_STYLE_DASHDOT: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLID, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHED, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_UNCHECKED);
+			PenStyle = 3;
+			break;
+		}
+
+		case ID_STYLE_DASHDOTDOT: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLID, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHED, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_CHECKED);
+			PenStyle = 4;
+			break;
+		}
+
+		case ID_STYLE_SOLIDBRUSH: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLIDBRUSH, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CLEAR, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_HORIZONTAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_VERTICAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_BDIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CROSS, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGCROSS, MF_UNCHECKED);
+			BrushStyle = 0;
+			break;
+		}
+		case ID_STYLE_CLEAR: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLIDBRUSH, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CLEAR, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_HORIZONTAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_VERTICAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_BDIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CROSS, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGCROSS, MF_UNCHECKED);
+			BrushStyle = 1;
+			break;
+		}
+		case ID_STYLE_HORIZONTAL: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLIDBRUSH, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CLEAR, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_HORIZONTAL, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_VERTICAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_BDIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CROSS, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGCROSS, MF_UNCHECKED);
+			BrushStyle = 2;
+			break;
+		}
+		case ID_STYLE_VERTICAL: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLIDBRUSH, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CLEAR, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_HORIZONTAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_VERTICAL, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_BDIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CROSS, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGCROSS, MF_UNCHECKED);
+			BrushStyle = 3;
+			break;
+		}
+		case ID_STYLE_DIAGONAL: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLIDBRUSH, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CLEAR, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_HORIZONTAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_VERTICAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGONAL, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_BDIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CROSS, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGCROSS, MF_UNCHECKED);
+			BrushStyle = 4;
+			break;
+		}
+		case ID_STYLE_BDIAGONAL: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLIDBRUSH, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CLEAR, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_HORIZONTAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_VERTICAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_BDIAGONAL, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CROSS, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGCROSS, MF_UNCHECKED);
+			BrushStyle = 5;
+			break;
+		}
+		case ID_STYLE_CROSS: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLIDBRUSH, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CLEAR, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_HORIZONTAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_VERTICAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_BDIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CROSS, MF_CHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGCROSS, MF_UNCHECKED);
+			BrushStyle = 6;
+			break;
+		}
+		case ID_STYLE_DIAGCROSS: {
+			CheckMenuItem(g_hMenu, ID_STYLE_SOLIDBRUSH, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CLEAR, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_HORIZONTAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_VERTICAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_BDIAGONAL, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_CROSS, MF_UNCHECKED);
+			CheckMenuItem(g_hMenu, ID_STYLE_DIAGCROSS, MF_CHECKED);
+			BrushStyle = 7;
 			break;
 		}
 
