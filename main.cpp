@@ -36,6 +36,7 @@ typedef DWORD* LPCOLORREF;
 HINSTANCE g_hInstance;
 CCanvas* g_pCanvas;
 IShape* g_pShape = 0;
+CPolygon* g_pPolygon;
 HMENU g_hMenu;
 
 COLORREF currentColor;
@@ -150,6 +151,11 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 			break;
 		}
 		case POLYGONSHAPE: {
+			CPolygon* ptr = new CPolygon(BrushStyle, brushcurrentColor, PenStyle, currentColor, PenWeight);
+			g_pShape = ptr;
+			g_pShape->SetStartX(_StartPos.x);
+			g_pShape->SetStartY(_StartPos.y);
+			amDrawing = true;
 			break;
 		}
 		
@@ -195,9 +201,14 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 				break;
 			}
 			case POLYGONSHAPE: {
-				break;
-			}
 
+				g_pPolygon->AddPoint(_EndPos);
+				g_pCanvas->AddShape(g_pShape);
+				g_pShape = nullptr;
+
+				break;
+
+			}
 			case STAMP: {
 				break;
 			}
@@ -240,6 +251,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_CHECKED);
 			checkedwp = ID_WIDTH_1;
 			PenWeight = 1;
+			//H3nry 01v3r
 			break;
 		}
 		case ID_WIDTH_2: {
