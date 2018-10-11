@@ -1,6 +1,6 @@
 # PaintTool
 
-![alt text](https://i.imgur.com/3fi4TGX.png)
+![alt text](https://i.imgur.com/fYQH2QR.png)
 
 ##### Painting Tool built in C++ for Windows
 
