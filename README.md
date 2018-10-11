@@ -11,3 +11,7 @@
 
 - Draw Lines, Rectangles, Ellipses and Polygons
 - Change Styling and Colour
+
+
+### Notes
+- you can only change the pen style if the size of the pen is 1
