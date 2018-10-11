@@ -1,12 +1,23 @@
 #include "polygon.h"
 #include <vector>
 
-std::vector<POINT> m_Points;
+int CPolygon::GetSize() const
+{
+	return static_cast<int>(m_Points.size());
+}
+
+int CPolygon::GetStartX() const
+{
+	return m_iStartX;
+}
+int CPolygon::GetStartY() const
+{
+	return m_iStartY;
+}
 
 CPolygon::CPolygon(int _iHatchStyle, COLORREF _FillColor, int _iPenStyle, COLORREF _PenColor, int _iPenWidth)
 {
 	m_iBrushStyle = _iHatchStyle;
-	m_nPoints = 0;
 	m_iFillColor = _FillColor;
 	m_iPenStyle = _iPenStyle;
 	m_iPenColor = _PenColor;

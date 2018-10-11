@@ -72,18 +72,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\..\brush.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="icon1.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="icon2.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="icon3.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="brush.ico">
       <Filter>Resource Files</Filter>
     </Image>

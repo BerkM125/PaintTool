@@ -42,7 +42,8 @@ HMENU g_hMenu;
 COLORREF currentColor;
 COLORREF brushcurrentColor;
 
-bool amDrawing;
+bool amDrawing = false;
+bool warnuserboutweight = false;
 int PenWeight = 1;
 int PenStyle = 0;
 int BrushStyle = 6;
@@ -60,6 +61,12 @@ enum ESHAPE
 	POLYGONSHAPE,
 	STAMP
 };
+
+bool VarianceEqual(int a, int b, int variance)
+{
+	return std::abs(a - b) <= variance;
+}
+
 
 COLORREF _ChooseColor(HWND const _hWnd, const COLORREF _CurrentColor)
 {
@@ -95,7 +102,7 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 	static POINT _StartPos;
 	static POINT _EndPos;
 
-	static ESHAPE currentShape;
+	static ESHAPE currentShape = LINESHAPE;
 	
 
 	switch (_msg)
@@ -151,11 +158,14 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 			break;
 		}
 		case POLYGONSHAPE: {
-			CPolygon* ptr = new CPolygon(BrushStyle, brushcurrentColor, PenStyle, currentColor, PenWeight);
-			g_pShape = ptr;
-			g_pShape->SetStartX(_StartPos.x);
-			g_pShape->SetStartY(_StartPos.y);
-			amDrawing = true;
+			if (g_pShape == nullptr) // NEW
+			{
+				CPolygon* ptr = new CPolygon(BrushStyle, brushcurrentColor, PenStyle, currentColor, PenWeight);
+				g_pShape = ptr;
+				g_pShape->SetStartX(_StartPos.x);
+				g_pShape->SetStartY(_StartPos.y);
+				amDrawing = true;
+			}
 			break;
 		}
 		
@@ -202,9 +212,18 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 			}
 			case POLYGONSHAPE: {
 
-				g_pPolygon->AddPoint(_EndPos);
-				g_pCanvas->AddShape(g_pShape);
-				g_pShape = nullptr;
+				// NEW
+				CPolygon* ptr = dynamic_cast<CPolygon*>(g_pShape);
+				ptr->AddPoint(_EndPos);
+
+				if (ptr->GetSize() > 1 &&
+					VarianceEqual(_EndPos.x, ptr->GetStartX(), 5) &&
+					VarianceEqual(_EndPos.y, ptr->GetStartY(), 5))
+				{
+					// finish editing shape
+					g_pCanvas->AddShape(g_pShape);
+					g_pShape = nullptr;
+				}
 
 				break;
 
@@ -225,18 +244,27 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 	case WM_MOUSEMOVE:
 	{
 		_MousePos = { GET_X_LPARAM(_lparam),  GET_Y_LPARAM(_lparam) };
-		break;
-
+		//InvalidateRect(_hwnd, nullptr, true);
 		return 0;
+
+		break;
 	}
 	case WM_PAINT:
 	{
 		hdc = BeginPaint(_hwnd, &ps);
 
-		g_pCanvas->Draw(hdc);
+		if (currentShape == POLYGONSHAPE && g_pShape != nullptr)
+		{
+			g_pCanvas->AddShape(g_pShape);
+			g_pCanvas->Draw(hdc);
+			g_pCanvas->PopShape();
+		}
+		else
+		{
+			g_pCanvas->Draw(hdc);
+		}
 
 		EndPaint(_hwnd, &ps);
-		// Return Success.
 
 		return (0);
 	}
@@ -249,14 +277,27 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_1: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_1, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_ENABLED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_ENABLED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_ENABLED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_ENABLED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_ENABLED);
 			checkedwp = ID_WIDTH_1;
 			PenWeight = 1;
-			//H3nry 01v3r
 			break;
 		}
 		case ID_WIDTH_2: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_2, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_2;
 			PenWeight = 2;
 			break;
@@ -264,6 +305,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_3: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_3, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_3;
 			PenWeight = 3;
 			break;
@@ -271,6 +321,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_4: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_4, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_4;
 			PenWeight = 4;
 			break;
@@ -278,6 +337,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_5: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_5, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_5;
 			PenWeight = 5;
 			break;
@@ -286,6 +354,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_6, MF_CHECKED);
 			checkedwp = ID_WIDTH_6;
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			PenWeight = 6;
 			break;
 		}
@@ -293,12 +370,30 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_7, MF_CHECKED);
 			checkedwp = ID_WIDTH_7;
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			PenWeight = 7;
 			break;
 		}
 		case ID_WIDTH_8: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_8, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_8;
 			PenWeight = 8;
 			break;
@@ -306,6 +401,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_9: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_9, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_9;
 			PenWeight = 9;
 			break;
@@ -313,6 +417,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_10: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_10, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_10;
 			PenWeight = 10;
 			break;
@@ -320,6 +433,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_11: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_11, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_11;
 			PenWeight = 11;
 			break;
@@ -327,6 +449,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_12: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_12, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_12;
 			PenWeight = 12;
 			break;
@@ -334,6 +465,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_13: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_13, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_13;
 			PenWeight = 13;
 			break;
@@ -341,6 +481,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_14: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_14, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_14;
 			PenWeight = 14;
 			break;
@@ -348,6 +497,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_15: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_15, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_15;
 			PenWeight = 15;
 			break;
@@ -355,6 +513,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_16: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_16, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_16;
 			PenWeight = 16;
 			break;
@@ -362,6 +529,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_17: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_17, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_17;
 			PenWeight = 17;
 			break;
@@ -369,6 +545,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_18: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_18, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_18;
 			PenWeight = 18;
 			break;
@@ -376,6 +561,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_19: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_19, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_19;
 			PenWeight = 19;
 			break;
@@ -383,6 +577,15 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		case ID_WIDTH_20: {
 			CheckMenuItem(g_hMenu, checkedwp, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_WIDTH_20, MF_CHECKED);
+			EnableMenuItem(g_hMenu, ID_STYLE_SOLID, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DOTTED, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOT, MF_GRAYED);
+			EnableMenuItem(g_hMenu, ID_STYLE_DASHDOTDOT, MF_GRAYED);
+			if (warnuserboutweight == false) {
+				MessageBox(_hwnd, L"WARNING LINE STYLING DOESN'T WORK WITH LINE WIDTHS GREATER THAN 1", L"WARNING", MB_OK | MB_ICONWARNING);
+				warnuserboutweight = true;
+			}
 			checkedwp = ID_WIDTH_20;
 			PenWeight = 20;
 			break;
@@ -501,6 +704,11 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ID_SHAPE_LINE: {
+			if (currentShape == POLYGONSHAPE && g_pShape != nullptr)
+			{
+				g_pCanvas->AddShape(g_pShape);
+				g_pShape = nullptr;
+			}
 			currentShape = LINESHAPE;
 			CheckMenuItem(g_hMenu, ID_SHAPE_POLYGON, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_SHAPE_ELLIPSE, MF_UNCHECKED);
@@ -510,6 +718,11 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ID_SHAPE_R: {
+			if (currentShape == POLYGONSHAPE && g_pShape != nullptr)
+			{
+				g_pCanvas->AddShape(g_pShape);
+				g_pShape = nullptr;
+			}
 			currentShape = RECTANGLESHAPE;
 			CheckMenuItem(g_hMenu, ID_SHAPE_POLYGON, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_SHAPE_ELLIPSE, MF_UNCHECKED);
@@ -520,6 +733,11 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 
 
 		case ID_SHAPE_ELLIPSE: {
+			if (currentShape == POLYGONSHAPE && g_pShape != nullptr)
+			{
+				g_pCanvas->AddShape(g_pShape);
+				g_pShape = nullptr;
+			}
 			currentShape = ELLIPSESHAPE;
 			CheckMenuItem(g_hMenu, ID_SHAPE_POLYGON, MF_UNCHECKED);
 			CheckMenuItem(g_hMenu, ID_SHAPE_ELLIPSE, MF_CHECKED);
@@ -529,6 +747,11 @@ LRESULT CALLBACK WindowProc(HWND _hwnd, UINT _msg, WPARAM _wparam, LPARAM _lpara
 		}
 
 		case ID_SHAPE_POLYGON: {
+			if (currentShape == POLYGONSHAPE && g_pShape != nullptr)
+			{
+				g_pCanvas->AddShape(g_pShape);
+				g_pShape = nullptr;
+			}
 			currentShape = POLYGONSHAPE;
 			CheckMenuItem(g_hMenu, ID_SHAPE_POLYGON, MF_CHECKED);
 			CheckMenuItem(g_hMenu, ID_SHAPE_ELLIPSE, MF_UNCHECKED);

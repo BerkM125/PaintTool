@@ -4,6 +4,11 @@
 
 std::vector<IShape>shapeIterator;
 
+void CCanvas::PopShape()
+{
+	m_shapes.pop_back();
+}
+
 CCanvas::CCanvas()
 {
 }
@@ -45,6 +50,5 @@ void CCanvas::AddShape(IShape * shape)
 {
 
 	m_shapes.push_back(shape);
-
 
 }

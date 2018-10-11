@@ -15,11 +15,15 @@ Mail        :   henry.oliver@mediadesign.school.nz
 #ifndef __POLYGON_H__
 #define __POLYGON_H__
 
+
+
 //	Library Includes
 #include <windows.h>
 #include <windowsx.h>
-
+#include <vector>
 #include "shape.h"
+
+
 
 class CPolygon : public IShape
 {
@@ -32,13 +36,17 @@ public:
 	void SetFillColor(COLORREF _newColor);
 	void SetPenColor(COLORREF _newColor);
 	void AddPoint(POINT p);
+	int GetSize() const;
+	int GetStartX() const;
+	int GetStartY() const;
+
+	
 
 
 private:
 	COLORREF m_iFillColor;
 	COLORREF m_iPenColor;
-
-	POINT* m_pPointList;
+	std::vector<POINT> m_Points;
 	int m_nPoints;
 	int m_iFillStyle;
 	int m_iPenStyle;

@@ -44,6 +44,7 @@ public:
 	bool Draw(HDC _hdc);
 	void Save(HWND _hwnd);
 	void AddShape(IShape*);
+	void PopShape();
 	
 private:
 	CBackBuffer* m_pBackBuffer; // A canvas has a backbuffer.
